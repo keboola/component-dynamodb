@@ -5,6 +5,7 @@ Template Component main class.
 
 import ast
 import csv
+import json
 import logging
 import sys
 
@@ -82,6 +83,7 @@ class Component(KBCEnvHandler):
     def _validate_column_def(self, out_table, in_table, column_definiton):
         pkeys = out_table.key_schema
         attr_defs = out_table.attribute_definitions
+        table_manifest = self._get_table_manifest(in_table)
 
         cols = [col_def['name'] for col_def in column_definiton]
 
@@ -101,7 +103,7 @@ class Component(KBCEnvHandler):
 
         invalid_cols = []
         for col in cols:
-            if col not in in_table['columns']:
+            if col not in table_manifest['columns']:
                 invalid_cols.append(col)
 
         err_msg = ''
@@ -140,6 +142,12 @@ class Component(KBCEnvHandler):
                 line[key] = ast.literal_eval(line['value'])
 
         return line
+
+    def _get_table_manifest(self, table):
+        with open(table['full_path'] + '.manifest') as json_file:
+            manifest = json.load(json_file)
+
+        return manifest
 
 
 """

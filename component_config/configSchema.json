@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "title": "extractor configuration",
+  "required": [
+    "region",
+    "#access_key_secret",
+    "access_key_id",
+    "table_name",
+    "column_config"
+  ],
+  "properties": {
+    "access_key_id": {
+      "type": "string",
+      "title": "AWS Access Key ID",
+      "description": "Your AWS Access Key ID",
+      "propertyOrder": 100
+    },
+    "#access_key_secret": {
+      "type": "string",
+      "title": "AWS Access Key Secret",
+      "description": "Your AWS Access Key Secret.",
+      "format": "password",
+      "propertyOrder": 200
+    },
+    "region": {
+      "type": "string",
+      "format": "string",
+      "title": "Region",
+      "description": "AWS Region",
+      "enum": [
+        "us-east-2",
+        "us-east-2",
+        "us-east-1",
+        "us-west-1",
+        "us-west-2",
+        "ap-east-1",
+        "ap-south-1",
+        "ap-northeast-3",
+        "ap-northeast-2",
+        "ap-southeast-1",
+        "ap-southeast-2",
+        "ap-northeast-1",
+        "ca-central-1",
+        "cn-north-1",
+        "cn-northwest-1",
+        "eu-central-1",
+        "eu-west-1",
+        "eu-west-2",
+        "eu-west-3",
+        "eu-north-1",
+        "sa-east-1",
+        "us-gov-east-1",
+        "us-gov-west-1"
+      ],
+      "default": "us-east-1",
+      "propertyOrder": 300
+    },
+    "table_name": {
+      "type": "string",
+      "format": "string",
+      "title": "Destination Table name",
+      "description": "Exact name of an existing DynamoDB table",
+      "propertyOrder": 400
+    },
+    "column_config": {
+      "type": "array",
+      "title": "Column Configuration",
+      "description": "Configuration of input table columns. The names must match exactly the names of the input table and the output table.",
+      "items": {
+        "format": "grid",
+        "type": "object",
+        "title": "Column",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Column Name",
+            "description": "The name must match exactly the source and destination table column.",
+            "propertyOrder": 1000
+          },
+          "type": {
+            "enum": [
+              "scalar",
+              "object"
+            ],
+            "type": "string",
+            "title": "Type",
+            "description": "Scalar type is any single value. Object type expect a valid JSON string or a JSON array string",
+            "default": "scalar",
+            "propertyOrder": 2000
+          }
+        }
+      }
+    }
+  }
+}

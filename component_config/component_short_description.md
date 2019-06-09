@@ -1,0 +1,1 @@
+Amazon DynamoDB is a key-value and document database that delivers single-digit millisecond performance at any scale.

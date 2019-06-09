@@ -74,8 +74,10 @@ class Component(KBCEnvHandler):
 
         column_definiton = params[KEY_COLUMN_CONFIG]
 
+        logging.info('Validating input...')
         self._validate_column_def(out_table, in_table, column_definiton)
 
+        logging.info('Runing export...')
         self.send_data_batch(in_table, out_table, column_definiton)
 
         logging.info("Export finished")

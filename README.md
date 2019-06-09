@@ -37,7 +37,7 @@ the nested structures must be serialized within the column values. e.g.
     ```
 
 
- ## Example
+### Example
  
 The following table row:
 

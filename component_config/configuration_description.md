@@ -8,12 +8,18 @@ The writer takes a single table on the input.
     - `scalar` type - the column contains a single value [e.g. string, number, ...]
     - `object` type - the column contains a valid JSON string. This allows exporting of a nested structures -> 
 the nested structures must be serialized within the column values. e.g. 
+
     ```json
     {
     "name": "Test",
     "value": "1"
     }
     ```
+    
     or a valid JSON array e.g. 
+    
     ```json
     ["val1", "val2"]
+    ```
+
+  

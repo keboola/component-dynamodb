@@ -141,7 +141,7 @@ class Component(KBCEnvHandler):
 
         for key in line:
             if cols_types[key] in ['set', 'object']:
-                line[key] = ast.literal_eval(line['value'])
+                line[key] = ast.literal_eval(line[key])
 
         return line
 
@@ -164,5 +164,5 @@ if __name__ == "__main__":
     try:
         comp.run()
     except Exception as e:
-        logging.error(e)
+        logging.exception(e)
         exit(1)

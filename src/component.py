@@ -117,7 +117,7 @@ class Component(KBCEnvHandler):
 
         if invalid_cols:
             err_msg += F'Some columns defined in the column definition ' \
-                F'are not valid (do not exist in the source table) {invalid_cols}\n'
+                       F'are not valid (do not exist in the source table) {invalid_cols}\n'
 
         if err_msg != '':
             raise ValueError(err_msg)

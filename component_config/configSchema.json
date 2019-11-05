@@ -1,6 +1,6 @@
 {
   "type": "object",
-  "title": "extractor configuration",
+  "title": "Configuration",
   "required": [
     "region",
     "#access_key_secret",

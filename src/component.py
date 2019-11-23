@@ -28,8 +28,6 @@ SUPPORTED_DATA_TYPES = ['set', 'object', 'scalar', 'gzip']
 MANDATORY_PARS = [KEY_ACCESS_KEY_ID, KEY_ACCESS_KEY_SECRET, KEY_COLUMN_CONFIG, KEY_REGION, KEY_TABLE_NAME]
 MANDATORY_IMAGE_PARS = []
 
-APP_VERSION = '0.0.1'
-
 
 class Component(KBCEnvHandler):
 
@@ -45,7 +43,6 @@ class Component(KBCEnvHandler):
             self.set_gelf_logger(log_level)
         else:
             self.set_default_logger(log_level)
-        logging.info('Running version %s', APP_VERSION)
         logging.info('Loading configuration...')
 
         try:

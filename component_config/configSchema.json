@@ -65,7 +65,7 @@
     "column_config": {
       "type": "array",
       "title": "Column Configuration",
-      "description": "Configuration of input table columns. The names must match exactly the names of the input table and the output table.",
+      "description": "Configuration of input table columns. The names must match exactly the names of the input table and the output table. \n Scalar type is any single value. Object type expect a valid JSON string or a JSON array string. Gzip type will compress any value and store as a Binary type.",
       "items": {
         "format": "grid",
         "type": "object",
@@ -89,7 +89,6 @@
             ],
             "type": "string",
             "title": "Type",
-            "description": "Scalar type is any single value. Object type expect a valid JSON string or a JSON array string",
             "default": "scalar",
             "propertyOrder": 2000
           }

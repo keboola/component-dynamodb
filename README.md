@@ -20,7 +20,7 @@ The writer takes a single table on the input.
 - **AWS Access Key ID** - valid AWS Access Key ID
 - **AWS Access Key Secret** - valid AWS Access Key Secret
 - **Region** - AWS region
-- **Destination Table name** - name of the destination table exactly as is.
+- **Destination Table name** - name of the existing destination table exactly as is.
 - **Column Configuration** - Configuration of the input columns. The names must appear exactly as they are in the destination and 
 the source table. The column type must be set to its appropriate value. 
     - `scalar` type - the column contains a single value [e.g. string, number, ...]

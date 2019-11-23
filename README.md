@@ -12,6 +12,7 @@ The writer takes a single table on the input.
 - Other attributes may be included as required.
 - The column should contain either a `scalar` value single string, number, etc. 
 - Or an `object` value -> a valid JSON String or a JSON array string.
+- Column values may be `gzipped` and stored as Binary values.
 
 
 ### Parameters
@@ -19,11 +20,11 @@ The writer takes a single table on the input.
 - **AWS Access Key ID** - valid AWS Access Key ID
 - **AWS Access Key Secret** - valid AWS Access Key Secret
 - **Region** - AWS region
-- **Destination Table name** - name of the destination table exactly as is.
+- **Destination Table name** - name of the existing destination table exactly as is.
 - **Column Configuration** - Configuration of the input columns. The names must appear exactly as they are in the destination and 
 the source table. The column type must be set to its appropriate value. 
     - `scalar` type - the column contains a single value [e.g. string, number, ...]
-    - `object` type - the column contains a valid JSON string. This allows exporting of a nested structures -> 
+    - `object` type - the column contains a valid JSON string. This allows exporting of nested structures -> 
 the nested structures must be serialized within the column values. e.g. 
     ```json
     {
@@ -35,6 +36,7 @@ the nested structures must be serialized within the column values. e.g.
     ```json
     ["val1", "val2"]
     ```
+  - `gzip` type - any content in the column will be gzipped and stored as `Binary` value
 
 
 ### Example

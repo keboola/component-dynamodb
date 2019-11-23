@@ -12,6 +12,7 @@ The writer takes a single table on the input.
 - Other attributes may be included as required.
 - The column should contain either a `scalar` value single string, number, etc. 
 - Or an `object` value -> a valid JSON String or a JSON array string.
+- Column values may be `gzipped` and stored as Binary values.
 
 
 ### Parameters
@@ -23,7 +24,7 @@ The writer takes a single table on the input.
 - **Column Configuration** - Configuration of the input columns. The names must appear exactly as they are in the destination and 
 the source table. The column type must be set to its appropriate value. 
     - `scalar` type - the column contains a single value [e.g. string, number, ...]
-    - `object` type - the column contains a valid JSON string. This allows exporting of a nested structures -> 
+    - `object` type - the column contains a valid JSON string. This allows exporting of nested structures -> 
 the nested structures must be serialized within the column values. e.g. 
     ```json
     {

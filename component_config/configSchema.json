@@ -84,7 +84,8 @@
           "type": {
             "enum": [
               "scalar",
-              "object"
+              "object",
+              "gzip"
             ],
             "type": "string",
             "title": "Type",

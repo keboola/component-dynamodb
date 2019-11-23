@@ -35,6 +35,7 @@ the nested structures must be serialized within the column values. e.g.
     ```json
     ["val1", "val2"]
     ```
+  - `gzip` type - any content in the column will be gzipped and stored as `Binary` value
 
 
 ### Example

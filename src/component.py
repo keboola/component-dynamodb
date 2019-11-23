@@ -5,21 +5,25 @@ Template Component main class.
 
 import ast
 import csv
+import gzip
 import json
 import logging
+import os
 import sys
 
 import boto3
 from kbc.env_handler import KBCEnvHandler
 
 # configuration variables
-MAX_CHUNK_SIZE = 1000000
 KEY_ACCESS_KEY_SECRET = '#access_key_secret'
 KEY_ACCESS_KEY_ID = 'access_key_id'
 KEY_REGION = 'region'
 
 KEY_TABLE_NAME = 'table_name'
 KEY_COLUMN_CONFIG = 'column_config'
+KEY_DEBUG = 'debug'
+
+SUPPORTED_DATA_TYPES = ['set', 'object', 'scalar', 'gzip']
 
 MANDATORY_PARS = [KEY_ACCESS_KEY_ID, KEY_ACCESS_KEY_SECRET, KEY_COLUMN_CONFIG, KEY_REGION, KEY_TABLE_NAME]
 MANDATORY_IMAGE_PARS = []
@@ -32,10 +36,15 @@ class Component(KBCEnvHandler):
     def __init__(self, debug=False):
         KBCEnvHandler.__init__(self, MANDATORY_PARS)
         # override debug from config
-        if self.cfg_params.get('debug'):
+        if self.cfg_params.get(KEY_DEBUG):
             debug = True
 
-        self.set_default_logger('DEBUG' if debug else 'INFO')
+        log_level = logging.DEBUG if debug else logging.INFO
+        # setup GELF if available
+        if os.getenv('KBC_LOGGER_ADDR', None):
+            self.set_gelf_logger(log_level)
+        else:
+            self.set_default_logger(log_level)
         logging.info('Running version %s', APP_VERSION)
         logging.info('Loading configuration...')
 
@@ -47,18 +56,16 @@ class Component(KBCEnvHandler):
             exit(1)
 
         # create boto client
+        logging.info('Creating DynamoDB connection..')
+        self.dynamodb = boto3.resource('dynamodb', region_name=self.cfg_params[KEY_REGION],
+                                       aws_access_key_id=self.cfg_params[KEY_ACCESS_KEY_ID],
+                                       aws_secret_access_key=self.cfg_params[KEY_ACCESS_KEY_SECRET])
 
     def run(self):
         '''
         Main execution code
         '''
         params = self.cfg_params  # noqa
-
-        # Create clients
-        logging.info('Creating DynamoDB connection..')
-        self.dynamodb = boto3.resource('dynamodb', region_name=params[KEY_REGION],
-                                       aws_access_key_id=params[KEY_ACCESS_KEY_ID],
-                                       aws_secret_access_key=params[KEY_ACCESS_KEY_SECRET])
 
         table_name = params[KEY_TABLE_NAME]
         logging.info(F'Fetching table "{table_name}" details')
@@ -88,6 +95,8 @@ class Component(KBCEnvHandler):
         table_manifest = self._get_table_manifest(in_table)
 
         cols = [col_def['name'] for col_def in column_definiton]
+        # check for supported types
+        err_types = [col_def for col_def in column_definiton if col_def['type'] not in SUPPORTED_DATA_TYPES]
 
         # check for keys
         missing_keys = []
@@ -109,6 +118,9 @@ class Component(KBCEnvHandler):
                 invalid_cols.append(col)
 
         err_msg = ''
+        if err_types:
+            err_msg += F'Some column definitions contain unsupported types {err_types}\n'
+
         if missing_keys:
             err_msg += F'Some key attributes are missing in the column definition {missing_keys}\n'
 
@@ -142,6 +154,8 @@ class Component(KBCEnvHandler):
         for key in line:
             if cols_types[key] in ['set', 'object']:
                 line[key] = ast.literal_eval(line[key])
+            elif cols_types[key] == 'gzip':
+                line[key] = gzip.compress(bytes(line[key], 'utf-8'))
 
         return line
 

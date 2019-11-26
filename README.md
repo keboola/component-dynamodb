@@ -1,4 +1,4 @@
-# KBC Component Python template
+# DynamoDB writer for Keboola Connection
 
 A simple KBC writer component that allows to export data from KBC to an **existing table** in DynamoDB.
 
